@@ -4,22 +4,21 @@ A project for CSC-207.
 
 Authors:
 
-* Your Name Here
+* Mina Bakrac
 * Samuel A. Rebelsky (starter code)
 
 ---
 
 Overview:
 
-PLEASE PROVIDE AN OVERVIEW OF THE PROJECT FOR THOSE WHO MIGHT NOT
-OTHERWISE UNDERSTAND IT.
+Creates a Matrix using 2D arrays with a variety of methods for adding/deleting rows, columns, and values
 
 ---
 
-Citations:
+Citations: Evening tutor Charles
 
 ---
 
-This code may be found at <https://github.com/USERID/mp-matrices-maven>. 
+This code may be found at <https://github.com/bakracm/mp-matrices-maven>. 
 
 The original code may be found at <https://github.com/Grinnell-CSC207/mp-matrices-maven>.
