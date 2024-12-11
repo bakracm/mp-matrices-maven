@@ -141,10 +141,22 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the row is negative or greater than the height.
    */
   public void insertRow(int row) {
-    if ((row > 0) && (row < this.height())) {
-      for (int i = 0; i < this.width(); i++) {
-        this.set(row, i, this.defaulVal);
+    if ((row >= 0) && (row <= this.height())) {
+      T[][] newMatrix = (T[][]) new Object[this.height + 1][this.width];
+      for (int i = 0; i < (this.height + 1); i++) {
+        for(int j = 0; j < this.width; j++) {
+          if (i == row) {
+            newMatrix[i][j] = defaulVal;
+          } else if (i < row) {
+            newMatrix[i][j] = this.values[i][j];
+          } else if (i > row) {
+            newMatrix[i][j] = this.values[i - 1][j];
+          } // if/else
+        } // for
       } // for
+      this.values = newMatrix;
+      this.height = height + 1;
+      this.size = width * height;
     } else {
       throw new IndexOutOfBoundsException("Error: Index out of bounds.");
     } // if/else
@@ -164,11 +176,23 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the size of vals is not the same as the width of the matrix.
    */
   public void insertRow(int row, T[] vals) throws ArraySizeException {
-    if ((row > 0) && (row < this.height())) {
+    if ((row >= 0) && (row <= this.height())) {
       if (this.width() == vals.length) {
-        for (int i = 0; i < this.width(); i++) {
-          this.set(row, i, vals[i]);
+        T[][] newMatrix = (T[][]) new Object[this.height + 1][this.width];
+        for (int i = 0; i < (this.height + 1); i++) {
+          for(int j = 0; j < this.width; j++) {
+            if (i == row) {
+              newMatrix[i][j] = vals[j];
+            } else if (i < row) {
+              newMatrix[i][j] = this.values[i][j];
+            } else if (i > row) {
+              newMatrix[i][j] = this.values[i - 1][j];
+            } // if/else
+          } // for
         } // for
+        this.values = newMatrix;
+        this.height = height + 1;
+        this.size = width * height;
       } else {
         throw new ArraySizeException("Error: Values are the wrong length");
       } // if/else
@@ -187,10 +211,22 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the column is negative or greater than the width.
    */
   public void insertCol(int col) {
-    if ((col > 0) && (col < this.width())) {
-      for (int i = 0; i < this.height(); i++) {
-        this.set(col, i, this.defaulVal);
-      } // for
+    if ((col >= 0) && (col <= this.width())) {
+      T[][] newMatrix = (T[][]) new Object[this.height][this.width + 1];
+        for (int i = 0; i < (this.width + 1); i++) {
+          for(int j = 0; j < this.height; j++) {
+            if (i == col) {
+              newMatrix[j][i] = defaulVal;
+            } else if (i < col) {
+              newMatrix[j][i] = this.values[j][i];
+            } else if (i > col) {
+              newMatrix[j][i] = this.values[j][i - 1];
+            } // if/else
+          } // for
+        } // for
+      this.values = newMatrix;
+      this.width = width + 1;
+      this.size = width * height;
     } else {
       throw new IndexOutOfBoundsException("Error: Index out of bounds.");
     } // if/else
@@ -210,14 +246,26 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the size of vals is not the same as the height of the matrix.
    */
   public void insertCol(int col, T[] vals) throws ArraySizeException {
-    if ((col > 0) && (col < this.width())) {
-      if (this.height() == vals.length) {
-        for (int i = 0; i < this.height(); i++) {
-          this.set(col, i, vals[i]);
+    if ((col >= 0) && (col <= this.width())) {
+      if (this.height() == vals.length) {    
+      T[][] newMatrix = (T[][]) new Object[this.height][this.width + 1];
+      for (int i = 0; i < (this.width + 1); i++) {
+        for(int j = 0; j < this.height; j++) {
+          if (i == col) {
+            newMatrix[j][i] = vals[j];
+          } else if (i < col) {
+            newMatrix[j][i] = this.values[j][i];
+          } else if (i > col) {
+            newMatrix[j][i] = this.values[j][i - 1];
+          } // if/else
         } // for
-      } else {
-        throw new ArraySizeException("Error: Values are the wrong length");
-      } // if/else
+      } // for
+    this.values = newMatrix;
+    this.width = width + 1;
+    this.size = width * height;
+    } else {
+      throw new ArraySizeException("Error: Values are the wrong length");
+    } // if/else
     } else {
       throw new IndexOutOfBoundsException("Error: Index out of bounds.");
     } // if/else
@@ -286,7 +334,11 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void fillRegion(int startRow, int startCol, int endRow, int endCol,
       T val) {
-    // STUB
+    for (int i = startRow; i < endRow; i++) {
+      for (int j = startCol; j < endCol; j++) {
+        this.values[i][j] = val;
+      } // for
+    } // for
   } // fillRegion(int, int, int, int, T)
 
   /**
@@ -312,7 +364,17 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void fillLine(int startRow, int startCol, int deltaRow, int deltaCol,
       int endRow, int endCol, T val) {
-    // STUB
+    if (((startRow >= 0) && (endRow <= this.height)) && ((startCol >= 0) && (endCol <= this.width))) {
+      int i = startRow;
+      int j = startCol;
+      while ((i < endRow) && (j < endCol)) {
+        this.values[i][j] = val;
+        i = (i + deltaRow);
+        j = (j + deltaCol);
+      } // while
+    } else {
+      throw new IndexOutOfBoundsException("Error: Index out of bounds");
+    } // if/else
   } // fillLine(int, int, int, int, int, int, T)
 
   /**
