@@ -1,0 +1,2 @@
+CHANGES MADE FOR RESUBMISSION:
+Fixed stylechecks, implemented all of the inserts/fills/equals methods, debugged failed tests
